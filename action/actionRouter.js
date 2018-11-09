@@ -16,6 +16,46 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  action
+    .get(id)
+    .then( action => {
+      res.status(200).json(action)
+    })
+    .catch( error => {
+      res.status(500).json({message: "Could not retrieve action info", error})
+    })
+})
+
+router.post('/', (req, res) => {
+  action
+    .insert(req.body)
+    .then((actionData) => {
+      res.status(201).json(actionData);
+    })
+    .catch( error => {
+      res.status(500).json({ message: "New action not created", error})
+    })
+})
+
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  action
+    .update(id, changes)
+    .then( action =>{
+      if (!action){
+        res.status(404).json({message: "that action was not found"})
+      } else {
+        res.status(200).json(action)
+      }
+    })
+    .catch( error => {
+      res.status(500).json({ message: "error updating project", error})
+    })
+})
+
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
 
