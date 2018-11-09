@@ -17,11 +17,11 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/actions/:id', (req, res) => {
+router.get('/:id/actions', (req, res) => {
   const { id } = req.params;
   project
     .getProjectActions(id)
-    then( project =>{
+    .then( project =>{
       if (!project){
         res.status(404).json({message: "that projects actions were not found"})
       } else {
@@ -45,10 +45,12 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const changes = req.body;
+  const { name, description } = req.body;
+  if( !description || !name || description.length > 128) {
+    res.status(400).json({message: "Missing information or your description is too long"})
+  }
   project
-    .update(id, changes)
+    .update(req.params.id, { name, description })
     .then( project =>{
       if (!project){
         res.status(404).json({message: "that project was not found"})

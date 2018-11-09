@@ -44,10 +44,13 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const changes = req.body;
+  const { description, notes, project_id} = req.body;
+
+  if(!project_id || !description || !notes || description.length > 128) {
+    res.status(400).json({message: "Missing information or your description is too long"})
+  }
   action
-    .update(id, changes)
+    .update(req.params.id, {description, notes, project_id} )
     .then( action =>{
       if (!action){
         res.status(404).json({message: "that action was not found"})
