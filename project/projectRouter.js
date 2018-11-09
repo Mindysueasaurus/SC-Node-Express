@@ -21,8 +21,12 @@ router.get('/actions/:id', (req, res) => {
   const { id } = req.params;
   project
     .getProjectActions(id)
-    .then( project => {
-      res.status(200).json(project)
+    then( project =>{
+      if (!project){
+        res.status(404).json({message: "that projects actions were not found"})
+      } else {
+        res.status(200).json(project)
+      }
     })
     .catch( error => {
       res.status(500).json({message: "Could not retrieve project info", error})
@@ -30,7 +34,6 @@ router.get('/actions/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  
   project
     .insert(req.body)
     .then((projectData) => {

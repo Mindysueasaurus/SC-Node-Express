@@ -21,7 +21,11 @@ router.get('/:id', (req, res) => {
   action
     .get(id)
     .then( action => {
-      res.status(200).json(action)
+      if (!action){
+        res.status(404).json({message: "that action was not found"})
+      } else {
+        res.status(200).json(action)
+      }
     })
     .catch( error => {
       res.status(500).json({message: "Could not retrieve action info", error})
