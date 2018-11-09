@@ -17,10 +17,10 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/actions/:id', (req, res) => {
   const { id } = req.params;
   project
-    .getProjectsActions(id)
+    .getProjectActions(id)
     .then( project => {
       res.status(200).json(project)
     })
