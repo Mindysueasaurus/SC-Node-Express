@@ -16,10 +16,17 @@ router.get('/', (req, res) => {
     })
 })
 
-// router.get('/:id', (req, res) => {
-//   const { id } = req.params;
-//   project.
-// })
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  project
+    .getProjectsActions(id)
+    .then( project => {
+      res.status(200).json(project)
+    })
+    .catch( error => {
+      res.status(500).json({message: "Could not retrieve project info", error})
+    })
+})
 
 router.post('/', (req, res) => {
   
